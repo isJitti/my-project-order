@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ระบบครัว - รับออเดอร์</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+</head>
+
+<body class="bg-light p-4">
+
+    <div class="container">
+        <h2 class="fw-bold mb-4">
+            🔔 ออเดอร์ร้าน: <span id="shopTitle" class="text-primary">กำลังโหลด...</span>
+        </h2>
+
+        <div id="orderContainer" class="row g-3">
+            <div class="col-12 text-center text-muted mt-5">
+                <h3>กำลังรอออเดอร์...</h3>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // 🔴🔴 2. อย่าลืมใส่ Config ของคุณตรงนี้ 🔴🔴
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOz2CQx7TwfMAMeyVwhsZMWz69nOSmqE8", // <-- แก้ตรงนี้
+            authDomain: "lunch-system-9362c.firebaseapp.com",
+            projectId: "lunch-system-9362c",
+            storageBucket: "lunch-system-9362c.firebasestorage.app",
+            messagingSenderId: "927055895768",
+            appId: "1:927055895768:web:7216b29115991d90f00bad"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // 🟢 3. โค้ดลับ: ดึงชื่อร้านจากลิงก์ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentShop = urlParams.get('shop'); // ดึงค่าหลัง ?shop=...
+
+        const shopTitle = document.getElementById('shopTitle');
+
+        // ถ้าไม่ได้ใส่ชื่อร้านมา ให้แจ้งเตือน
+        if (!currentShop) {
+            shopTitle.innerText = "ไม่ระบุร้านค้า (Error)";
+            shopTitle.className = "text-danger";
+            alert("กรุณาเข้าลิงก์ให้ถูกต้อง เช่น monitor.html?shop=noodle");
+        } else {
+            // แสดงชื่อร้านที่หัวข้อ
+            // แปลงชื่อภาษาอังกฤษเป็นไทยให้สวยๆ (Optional)
+            const shopNamesThai = {
+                'noodle': 'ก๋วยเตี๋ยวรสเด็ด',
+                'tamsang': 'ลุงแขกตามสั่ง',
+                'fried': 'ร้านของทอด',
+                'drink': 'ร้านน้ำดื่ม'
+            };
+            shopTitle.innerText = shopNamesThai[currentShop] || currentShop;
+
+            // 🟢 4. ดักฟังออเดอร์ (ใช้ตัวแปร currentShop ในการกรอง)
+            db.collection("orders")
+                .where("shopType", "==", currentShop) // 🔥 กรองร้านใครร้านมันตรงนี้!
+                .where("status", "==", "waiting")
+                .onSnapshot((snapshot) => {
+                    const container = document.getElementById('orderContainer');
+                    container.innerHTML = "";
+
+                    // ถ้าไม่มีออเดอร์
+                    if (snapshot.empty) {
+                        container.innerHTML = `<div class="col-12 text-center text-muted mt-5"><h3>ว่างจัง... ยังไม่มีออเดอร์ 😴</h3></div>`;
+                        return;
+                    }
+
+                    // แจ้งเตือนเมื่อมีของใหม่
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === "added") {
+                            document.getElementById('notifSound').play().catch(() => { });
+                        }
+                    });
+
+                    // วนลูปสร้างการ์ด
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+
+                        let itemsHtml = "";
+                        data.items.forEach(item => {
+                            itemsHtml += `<li>${item.name} (${item.price}฿)</li>`;
+                        });
+
+                        const cardHtml = `
+                            <div class="col-md-4">
+                                <div class="card shadow-sm border-warning border-3">
+                                    <div class="card-header bg-warning fw-bold d-flex justify-content-between">
+                                        <span>คิว: ${data.queue}</span>
+                                        <small>${new Date(data.timestamp?.seconds * 1000).toLocaleTimeString('th-TH')}</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="mb-3 ps-3">${itemsHtml}</ul>
+                                        <h4 class="text-end text-primary fw-bold">${data.totalPrice} ฿</h4>
+                                        <button onclick="finishOrder('${doc.id}')" class="btn btn-success w-100 mt-2">
+                                            ✅ ทำเสร็จแล้ว
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += cardHtml;
+                    });
+                });
+        }
+
+        function finishOrder(docId) {
+            if (confirm('ทำรายการนี้เสร็จแล้วใช่ไหม?')) {
+                db.collection("orders").doc(docId).update({ status: "done" });
+            }
+        }
+    </script>
+</body>
+
+</html>

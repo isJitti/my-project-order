@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร้านของทอด - Lunch System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Sarabun', sans-serif;
+            padding-bottom: 80px;
+        }
+
+        /* Navbar */
+        .shop-navbar {
+            background-color: #2e1a47;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid #ffc107;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            color: #ffc107;
+        }
+
+        /* Shop Header */
+        .shop-header {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .shop-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
+        }
+
+        .shop-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Menu Card */
+        .menu-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-img {
+            height: 160px;
+            object-fit: cover;
+            width: 100%;
+            background-color: #eee;
+        }
+
+        .menu-body {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .btn-add {
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            width: 100%;
+            padding: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: #ffc107;
+            color: #2e1a47;
+        }
+
+        /* Select Style */
+        .form-select-sm {
+            border-radius: 20px;
+            border: 1px solid #ced4da;
+            cursor: pointer;
+        }
+
+        /* Floating Cart */
+        .floating-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffc107;
+            color: #2e1a47;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s;
+            border: 3px solid #2e1a47;
+            z-index: 1050;
+        }
+
+        .floating-cart:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-count {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="shop-navbar">
+        <div class="container d-flex align-items-center">
+            <a href="index.html" class="btn-back me-3"><i class="fas fa-arrow-left"></i> กลับ</a>
+            <span class="h5 mb-0 fw-bold">ร้านของทอด</span>
+        </div>
+    </nav>
+
+    <div class="shop-header">
+        <img src="Fried food.jpg"
+            onerror="this.src='https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'"
+            alt="Shop Banner">
+        <div class="shop-info container">
+            <h1 class="fw-bold">ร้านของทอด</h1>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <h4 class="mb-3 border-start border-4 border-warning ps-3 fw-bold" style="color: #2e1a47;">เมนูไม้ละ 10 บาท</h4>
+
+        <div class="row g-3">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Pork+Ball" class="menu-img" alt="ลูกชิ้นหมู">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ลูกชิ้นหมู</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">10 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addToCart('ลูกชิ้นหมู', 10, 'fried')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Cheese+Sausage" class="menu-img" alt="ไส้กรอกชีส">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ไส้กรอกชีส</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">10 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3" onclick="addToCart('ไส้กรอกชีส', 10)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Crab+Stick" class="menu-img" alt="ปูอัด">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ปูอัดเสียบไม้</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">10 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3" onclick="addToCart('ปูอัดทอด', 10)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Wing+Zaab" class="menu-img" alt="ไก่วิ้งแซ่บ">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ไก่วิ้งแซ่บ</h5>
+                            <p class="text-muted small mb-2">รสจัดจ้านถึงเครื่อง</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">10 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3" onclick="addToCart('ไก่วิ้งแซ่บ', 10)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Quail+Egg" class="menu-img" alt="เกี๊ยวไข่">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">เกี๊ยวไข่นกกระทา</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">10 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3" onclick="addToCart('เกี๊ยวไข่นกกระทา', 10)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <h4 class="mt-5 mb-3 border-start border-4 border-danger ps-3 fw-bold" style="color: #2e1a47;">เมนูทานเล่นอื่นๆ
+        </h4>
+        <div class="row g-3">
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Shake+Fries" class="menu-img" alt="เฟรนช์ฟรายส์">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">เฟรนช์ฟรายส์</h5>
+                            <p class="text-muted small mb-2">เลือกรสได้</p>
+                            <select class="form-select form-select-sm mb-2" id="opt-fries">
+                                <option value="รสปาปริก้า">รสปาปริก้า</option>
+                                <option value="รสบาร์บีคิว">รสบาร์บีคิว</option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">20 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('เฟรนช์ฟรายส์', 'opt-fries', 20)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="menu-card border-success">
+                    <img src="https://placehold.co/400x300?text=Cucumber" class="menu-img" alt="แตงกวา">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1 text-success">แตงกวา (ฟรี)</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-success">ฟรี</span>
+                            <button class="btn btn-sm btn-outline-success w-auto px-3 rounded-pill fw-bold"
+                                onclick="addToCart('แตงกวา (ฟรี)', 0)">
+                                รับแตงกวา
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="floating-cart" data-bs-toggle="modal" data-bs-target="#cartModal" onclick="renderCartPopup()">
+        <i class="fas fa-shopping-basket me-2"></i> ตะกร้า
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title fw-bold text-dark" id="cartModalLabel">
+                        <i class="fas fa-shopping-basket me-2"></i>ตะกร้าของคุณ
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItemsList">
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                        <span class="h5 fw-bold">ยอดรวมทั้งหมด</span>
+                        <span class="h4 fw-bold text-success" id="cartTotalPopup">0 ฿</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary rounded-pill"
+                        data-bs-dismiss="modal">เลือกต่อ</button>
+                    <a href="order_success.html" id="btnConfirmOrder"
+                        class="btn btn-primary rounded-pill px-4 disabled">
+                        ยืนยันสั่งซื้อ <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="cart.js"></script>
+
+    <script>
+        // ฟังก์ชันเสริมสำหรับเมนูที่มีตัวเลือก (เช่น เฟรนช์ฟรายส์)
+        function addWithOption(menuName, selectId, basePrice) {
+            const selectElement = document.getElementById(selectId);
+            const selectedOption = selectElement.value;
+
+            const finalName = `${menuName} (${selectedOption})`;
+            addToCart(finalName, basePrice);
+        }
+    </script>
+
+</body>
+
+</html>

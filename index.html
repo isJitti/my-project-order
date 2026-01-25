@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เลือกร้านอาหาร - Lunch Order System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Sarabun', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Navbar & Theme Colors --- */
+        .top-navbar {
+            background-color: #2e1a47;
+            /* ม่วงเข้ม */
+            color: white;
+            padding: 15px 0;
+            border-bottom: 4px solid #ffc107;
+            /* เส้นเหลือง */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-btn:hover {
+            color: #ffc107;
+        }
+
+        /* --- Hero Section (ส่วนหัวข้อ) --- */
+        .hero-section {
+            background: linear-gradient(135deg, #6f42c1 0%, #4a2c7a 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        /* --- Shop Cards (การ์ดร้านค้า) --- */
+        .shop-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .shop-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(111, 66, 193, 0.2);
+        }
+
+        .shop-card:hover .shop-img {
+            transform: scale(1.1);
+        }
+
+        .img-wrapper {
+            overflow: hidden;
+            height: 200px;
+            position: relative;
+        }
+
+        .shop-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .shop-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #ffc107;
+            color: #2e1a47;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .shop-card:hover .card-body {
+            border-bottom-color: #ffc107;
+        }
+
+        .shop-title {
+            color: #2e1a47;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .btn-enter {
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 25px;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .shop-card:hover .btn-enter {
+            background-color: #ffc107;
+            color: #2e1a47;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="top-navbar sticky-top">
+        <nav class="top-navbar sticky-top">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <a href="index.html" class="h4 mb-0 fw-bold text-white text-decoration-none me-4">
+                        <i class="fas fa-utensils me-2"></i>Lunch System
+                    </a>
+
+                    <a href="about.html" class="nav-btn d-none d-md-block">
+                        <i class="fas fa-info-circle me-1"></i> ผู้จัดทำ
+                    </a>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <a href="tracking.html"
+                        class="btn btn-sm btn-warning text-dark fw-bold rounded-pill px-3 me-3 shadow-sm">
+                        <i class="fas fa-receipt me-1"></i> <span class="d-none d-sm-inline">สถานะออเดอร์</span>
+                    </a>
+
+                    <span class="me-3 d-none d-md-inline">
+                        <i class="fas fa-user-circle"></i> นาย จิตติพัฒน์ กำเนิดขวา
+                    </span>
+                    <a href="login.html" onclick="localStorage.clear()"
+                        class="btn btn-sm btn-outline-light rounded-pill px-3">ออกจากระบบ</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="hero-section">
+            <div class="container">
+                <h2 class="fw-bold">ยินดีต้อนรับสู่โรงอาหาร</h2>
+                <p class="mb-0 opacity-75">กรุณาเลือกร้านอาหารที่ต้องการสั่งจองล่วงหน้า</p>
+            </div>
+        </div>
+
+        <div class="container mb-5 flex-grow-1">
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="shop-card" onclick="window.location.href='tamsang.html'">
+                        <div class="img-wrapper">
+                            <img src="restaurant.jpg" class="shop-img" alt="ร้านลุงแขกตามสั่ง">
+                            <span class="shop-badge"><i class="fas fa-fire"></i> ขายดี</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="shop-title">ร้านลุงแขกตามสั่ง</h5>
+                            <p class="text-muted small mb-0">ผัดกะเพรา ข้าวผัด คะน้าหมูกรอบ</p>
+                            <button class="btn btn-enter">ดูเมนู</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="shop-card" onclick="window.location.href='noodle.html'">
+                        <div class="img-wrapper">
+                            <img src="Noodle.jpg" class="shop-img" alt="ร้านก๋วยเตี๋ยว">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="shop-title">ร้านก๋วยเตี๋ยว</h5>
+                            <p class="text-muted small mb-0">น้ำตก ต้มยำ เย็นตาโฟ</p>
+                            <button class="btn btn-enter">ดูเมนู</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="shop-card" onclick="window.location.href='fried.html'">
+                        <div class="img-wrapper">
+                            <img src="Fried food.jpg" class="shop-img" alt="ร้านของทอด">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="shop-title">ร้านของทอด</h5>
+                            <p class="text-muted small mb-0">ลูกชิ้น เฟรนช์ฟรายส์ ไส้กรอก</p>
+                            <button class="btn btn-enter">ดูเมนู</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="shop-card" onclick="window.location.href='drinkShop.html'">
+                        <div class="img-wrapper">
+                            <img src="drink.jpg" class="shop-img" alt="ร้านน้ำ">
+                            <span class="shop-badge bg-info text-white"><i class="fas fa-snowflake"></i>
+                                เครื่องดื่ม</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="shop-title">ร้านน้ำดื่ม</h5>
+                            <p class="text-muted small mb-0">น้ำอัดลม น้ำเปล่า น้ำชา</p>
+                            <button class="btn btn-enter">ดูเมนู</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const userRole = localStorage.getItem('userRole');
+                const shopId = localStorage.getItem('shopId');
+
+                // ถ้าเป็นร้านค้า ให้สร้างปุ่มลอยขึ้นมา
+                if (userRole === 'shop' && shopId) {
+
+                    // สร้างปุ่ม HTML
+                    const adminBtn = document.createElement('a');
+                    adminBtn.href = `monitor.html?shop=${shopId}`; // ลิงก์ไปหน้าจอร้านตัวเองอัตโนมัติ
+                    adminBtn.className = 'btn-shop-monitor';
+                    adminBtn.innerHTML = '<i class="fas fa-store-alt me-2"></i> จัดการออเดอร์ (ร้านค้า)';
+
+                    // ใส่ Style ให้ปุ่ม (ปุ่มลอยซ้ายล่าง สีแดงเด่นๆ)
+                    adminBtn.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 20px;
+                    background-color: #dc3545;
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 50px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    z-index: 2000;
+                    border: 3px solid white;
+                    transition: transform 0.2s;
+                `;
+
+                    // Effect เด้งดึ๋งตอนชี้
+                    adminBtn.onmouseover = () => adminBtn.style.transform = 'scale(1.05)';
+                    adminBtn.onmouseout = () => adminBtn.style.transform = 'scale(1)';
+
+                    // แปะปุ่มลงหน้าเว็บ
+                    document.body.appendChild(adminBtn);
+
+                    // เปลี่ยนชื่อตรง Navbar เป็นชื่อร้าน
+                    const profileName = document.querySelector('.fa-user-circle').parentNode;
+                    if (profileName) {
+                        profileName.innerHTML = `<i class="fas fa-store"></i> ผู้จัดการร้าน (${shopId})`;
+                    }
+                }
+            });
+        </script>
+</body>
+
+</html>

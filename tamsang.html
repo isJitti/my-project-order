@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เมนูอาหาร - Lunch System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Sarabun', sans-serif;
+            padding-bottom: 80px;
+        }
+
+        /* Navbar */
+        .shop-navbar {
+            background-color: #2e1a47;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid #ffc107;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            color: #ffc107;
+        }
+
+        /* Shop Header */
+        .shop-header {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .shop-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
+        }
+
+        .shop-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Menu Card */
+        .menu-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-img {
+            height: 160px;
+            object-fit: cover;
+            width: 100%;
+            background-color: #eee;
+        }
+
+        .menu-body {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .btn-add {
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            width: 100%;
+            padding: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: #ffc107;
+            color: #2e1a47;
+        }
+
+        /* Dropdown & Form style customize */
+        .form-select-sm {
+            border-radius: 20px;
+            border: 1px solid #ced4da;
+            cursor: pointer;
+        }
+
+        /* Checkbox Custom */
+        .form-check-input:checked {
+            background-color: #2e1a47;
+            border-color: #2e1a47;
+        }
+
+        /* Floating Cart */
+        .floating-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffc107;
+            color: #2e1a47;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s;
+            border: 3px solid #2e1a47;
+            z-index: 1050;
+        }
+
+        .floating-cart:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-count {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="shop-navbar">
+        <div class="container d-flex align-items-center">
+            <a href="index.html" class="btn-back me-3"><i class="fas fa-arrow-left"></i> กลับ</a>
+            <span class="h5 mb-0 fw-bold">ร้านลุงแขกตามสั่ง</span>
+        </div>
+    </nav>
+
+    <div class="shop-header">
+        <img src="restaurant.jpg" alt="ร้านอาหารตามสั่ง">
+        <div class="shop-info container">
+            <h1 class="fw-bold">ร้านลุงแขกตามสั่ง</h1>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <h4 class="mb-3 border-start border-4 border-warning ps-3 fw-bold" style="color: #2e1a47;">เมนูอาหารจานเดียว
+        </h4>
+
+        <div class="row g-3">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Kaprao" class="menu-img" alt="กะเพรา">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ผัดกะเพรา</h5>
+                            <select class="form-select form-select-sm mb-2" id="opt-kaprao">
+                                <option value="หมูสับ">หมูสับ</option>
+                                <option value="ไก่">ไก่</option>
+                                <option value="หมูกรอบ">หมูกรอบ (+10฿)</option>
+                                <option value="ปลาหมึก">ปลาหมึก (+10฿)</option>
+                                <option value="ทะเล">ทะเล (+10฿)</option>
+                            </select>
+                            <div class="form-check small text-muted">
+                                <input class="form-check-input" type="checkbox" id="pisad-kaprao">
+                                <label class="form-check-label" for="pisad-kaprao">พิเศษ (+10฿)</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">50 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('ผัดกะเพรา', 'opt-kaprao', 50, 'pisad-kaprao')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Prik+Gaeng" class="menu-img" alt="พริกแกง">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ผัดพริกแกง</h5>
+                            <select class="form-select form-select-sm mb-2" id="opt-prikgaeng">
+                                <option value="ไก่">ไก่</option>
+                                <option value="หมูสับ">หมูสับ</option>
+                                <option value="หมูกรอบ">หมูกรอบ (+10฿)</option>
+                                <option value="หมูป่า">หมูป่า (+10฿)</option>
+                            </select>
+                            <div class="form-check small text-muted">
+                                <input class="form-check-input" type="checkbox" id="pisad-prikgaeng">
+                                <label class="form-check-label" for="pisad-prikgaeng">พิเศษ (+10฿)</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">50 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('ผัดพริกแกง', 'opt-prikgaeng', 50, 'pisad-prikgaeng')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Kana+Mookrob" class="menu-img" alt="คะน้าหมูกรอบ">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">คะน้าหมูกรอบ</h5>
+                            <div class="form-check small text-muted">
+                                <input class="form-check-input" type="checkbox" id="pisad-kana">
+                                <label class="form-check-label" for="pisad-kana">พิเศษ (+10฿)</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">60 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('คะน้าหมูกรอบ', null, 60, 'pisad-kana')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Prik+Glua" class="menu-img" alt="พริกเกลือ">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ผัดพริกเกลือ</h5>
+                            <select class="form-select form-select-sm mb-2" id="opt-prikglua">
+                                <option value="หมูสับ">หมูสับ</option>
+                                <option value="ไก่">ไก่</option>
+                                <option value="หมูกรอบ">หมูกรอบ (+10฿)</option>
+                                <option value="กุ้ง">กุ้ง (+10฿)</option>
+                            </select>
+                            <div class="form-check small text-muted">
+                                <input class="form-check-input" type="checkbox" id="pisad-prikglua">
+                                <label class="form-check-label" for="pisad-prikglua">พิเศษ (+10฿)</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">50 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('คั่วพริกเกลือ', 'opt-prikglua', 50, 'pisad-prikglua')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Pong+Curry" class="menu-img" alt="ผงกะหรี่">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ผัดผงกะหรี่</h5>
+                            <select class="form-select form-select-sm mb-2" id="opt-pongcurry">
+                                <option value="ไก่">ไก่</option>
+                                <option value="หมูสับ">หมูสับ</option>
+                                <option value="กุ้ง">กุ้ง (+10฿)</option>
+                            </select>
+                            <div class="form-check small text-muted">
+                                <input class="form-check-input" type="checkbox" id="pisad-pongcurry">
+                                <label class="form-check-label" for="pisad-pongcurry">พิเศษ (+10฿)</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">55 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('ผัดผงกะหรี่', 'opt-pongcurry', 55, 'pisad-pongcurry')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Suki" class="menu-img" alt="สุกี้">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">สุกี้รวมมิตร</h5>
+                            <select class="form-select form-select-sm mb-2" id="opt-suki">
+                                <option value="น้ำ">สุกี้น้ำ</option>
+                                <option value="แห้ง">สุกี้แห้ง</option>
+                            </select>
+                            <div class="form-check small text-muted">
+                                <input class="form-check-input" type="checkbox" id="pisad-suki">
+                                <label class="form-check-label" for="pisad-suki">พิเศษ (+10฿)</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">40 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('สุกี้', 'opt-suki', 40, 'pisad-suki')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Fried+Rice" class="menu-img" alt="ข้าวผัด">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ข้าวผัด</h5>
+                            <select class="form-select form-select-sm mb-2" id="opt-friedrice">
+                                <option value="หมู">หมูชิ้น</option>
+                                <option value="ไก่">ไก่</option>
+                                <option value="กุ้ง">กุ้ง (+10฿)</option>
+                            </select>
+                            <div class="form-check small text-muted">
+                                <input class="form-check-input" type="checkbox" id="pisad-friedrice">
+                                <label class="form-check-label" for="pisad-friedrice">พิเศษ (+10฿)</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">40 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('ข้าวผัด', 'opt-friedrice', 40, 'pisad-friedrice')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Omelet" class="menu-img" alt="ไข่เจียว">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ข้าวไข่เจียว</h5>
+                            <select class="form-select form-select-sm mb-2" id="opt-egg">
+                                <option value="หมูสับ">หมูสับ</option>
+                                <option value="กุ้งสับ">กุ้งสับ (+10฿)</option>
+                                <option value="เปล่า">ไข่เจียวเปล่า</option>
+                            </select>
+                            <div class="form-check small text-muted">
+                                <input class="form-check-input" type="checkbox" id="pisad-egg">
+                                <label class="form-check-label" for="pisad-egg">พิเศษ (+10฿)</label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">35 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3"
+                                onclick="addWithOption('ข้าวไข่เจียว', 'opt-egg', 35, 'pisad-egg')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <h4 class="mt-5 mb-3 border-start border-4 border-success ps-3 fw-bold" style="color: #2e1a47;">เครื่องเคียง /
+            เพิ่มเติม</h4>
+        <div class="row g-3">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Fried+Egg" class="menu-img" alt="ไข่ดาว">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ไข่ดาว</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">10 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3" onclick="addToCart('ไข่ดาว', 10)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Preserved+Egg" class="menu-img" alt="ไข่เยี่ยวม้า">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ไข่เยี่ยวม้า</h5>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">10 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3" onclick="addToCart('ไข่เยี่ยวม้า', 10)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="menu-card">
+                    <img src="https://placehold.co/400x300?text=Rice" class="menu-img" alt="ข้าวเปล่า">
+                    <div class="menu-body">
+                        <div>
+                            <h5 class="fw-bold mb-1">ข้าวเปล่า</h5>
+                            <p class="text-muted small mb-2">ข้าวหอมมะลิ</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="fw-bold text-primary">10 ฿</span>
+                            <button class="btn btn-sm btn-add w-auto px-3" onclick="addToCart('ข้าวเปล่า', 10)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="floating-cart" data-bs-toggle="modal" data-bs-target="#cartModal" onclick="renderCartPopup()">
+        <i class="fas fa-shopping-basket me-2"></i> ตะกร้า
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title fw-bold text-dark" id="cartModalLabel">
+                        <i class="fas fa-shopping-basket me-2"></i>ตะกร้าของคุณ
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItemsList"></div>
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                        <span class="h5 fw-bold">ยอดรวมทั้งหมด</span>
+                        <span class="h4 fw-bold text-success" id="cartTotalPopup">0 ฿</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary rounded-pill"
+                        data-bs-dismiss="modal">เลือกต่อ</button>
+                    <a href="order_success.html" id="btnConfirmOrder"
+                        class="btn btn-primary rounded-pill px-4 disabled">
+                        ยืนยันสั่งซื้อ <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="cart.js"></script>
+
+    <script>
+        // ฟังก์ชันอัปเดตใหม่: รองรับ Checkbox พิเศษ
+        function addWithOption(menuName, selectId, basePrice, checkboxId) {
+            let finalName = menuName;
+            let finalPrice = basePrice;
+
+            // 1. จัดการ Dropdown (เนื้อสัตว์)
+            if (selectId) {
+                const selectElement = document.getElementById(selectId);
+                const selectedOption = selectElement.value;
+                finalName = `${menuName} (${selectedOption})`;
+
+                // บวกราคาเนื้อสัตว์พิเศษ
+                if (['หมูกรอบ', 'ทะเล', 'กุ้ง', 'ปลาหมึก', 'หมูป่า', 'กุ้งสับ'].includes(selectedOption)) {
+                    finalPrice += 10;
+                } else if (selectedOption.includes('+10')) {
+                    finalPrice += 10;
+                }
+            }
+
+            // 2. จัดการ Checkbox (พิเศษ)
+            if (checkboxId) {
+                const checkboxElement = document.getElementById(checkboxId);
+                if (checkboxElement && checkboxElement.checked) {
+                    finalName += " [พิเศษ]";
+                    finalPrice += 10; // บวกค่าพิเศษ 10 บาท
+
+                    // (Optional) ติ๊กออกหลังจากสั่งเสร็จ เพื่อความสะดวก
+                    checkboxElement.checked = false;
+                }
+            }
+
+            // ส่งไปให้ cart.js
+            addToCart(finalName, finalPrice, 'tamsang');
+        }
+    </script>
+
+</body>
+
+</html>
